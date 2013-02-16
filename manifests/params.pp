@@ -21,7 +21,9 @@ class samba::params {
   }
 
   $service = $::operatingsystem ? {
-    default => 'samba',
+    /(?i:Centos|RedHat|Scientific|Fedora|Amazon|Linux)/ => 'smb',
+    /(?i:SLES|OpenSuSE)/                                => 'smb',
+    /(?i:Debian|Ubuntu|Mint)/                           => 'smbd',
   }
 
   $service_status = $::operatingsystem ? {
@@ -29,7 +31,7 @@ class samba::params {
   }
 
   $process = $::operatingsystem ? {
-    default => 'samba',
+    default => 'smbd',
   }
 
   $process_args = $::operatingsystem ? {
@@ -45,7 +47,7 @@ class samba::params {
   }
 
   $config_file = $::operatingsystem ? {
-    default => '/etc/samba/samba.conf',
+    default => '/etc/samba/smb.conf',
   }
 
   $config_file_mode = $::operatingsystem ? {
@@ -66,7 +68,8 @@ class samba::params {
   }
 
   $pid_file = $::operatingsystem ? {
-    default => '/var/run/samba.pid',
+    /(?i:Debian|Ubuntu|Mint)/ => '/var/run/samba/smbd.pid',
+    default                   => '/var/run/smbd.pid',
   }
 
   $data_dir = $::operatingsystem ? {
@@ -78,10 +81,10 @@ class samba::params {
   }
 
   $log_file = $::operatingsystem ? {
-    default => '/var/log/samba/samba.log',
+    default => [ '/var/log/samba/log.smbd','/var/log/samba/log.nmbd' ],
   }
 
-  $port = '42'
+  $port = '445'
   $protocol = 'tcp'
 
   # General Settings
