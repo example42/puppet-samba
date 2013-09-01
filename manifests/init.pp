@@ -128,7 +128,7 @@
 # [*noops*]
 #   Set noop metaparameter to true for all the resources managed by the module.
 #   Basically you can run a dryrun for this specific module if you set
-#   this to true. Default: false
+#   this to true. Default: undef
 #
 # Default class params - As defined in samba::params.
 # Note that these variables are mostly defined and used in the module itself,
@@ -253,7 +253,6 @@ class samba (
   $bool_firewall=any2bool($firewall)
   $bool_debug=any2bool($debug)
   $bool_audit_only=any2bool($audit_only)
-  $bool_noops=any2bool($noops)
 
   ### Definition of some variables used in the module
   $manage_package = $samba::bool_absent ? {
@@ -328,7 +327,7 @@ class samba (
   ### Managed resources
   package { $samba::package:
     ensure  => $samba::manage_package,
-    noop    => $samba::bool_noops,
+    noop    => $samba::noops,
   }
 
   service { 'samba':
@@ -338,7 +337,7 @@ class samba (
     hasstatus  => $samba::service_status,
     pattern    => $samba::process,
     require    => Package[$samba::package],
-    noop       => $samba::bool_noops,
+    noop       => $samba::noops,
   }
 
   file { 'samba.conf':
@@ -353,7 +352,7 @@ class samba (
     content => $samba::manage_file_content,
     replace => $samba::manage_file_replace,
     audit   => $samba::manage_audit,
-    noop    => $samba::bool_noops,
+    noop    => $samba::noops,
   }
 
   # The whole samba configuration directory can be recursively overriden
@@ -369,7 +368,7 @@ class samba (
       force   => $samba::bool_source_dir_purge,
       replace => $samba::manage_file_replace,
       audit   => $samba::manage_audit,
-      noop    => $samba::bool_noops,
+      noop    => $samba::noops,
     }
   }
 
@@ -387,7 +386,7 @@ class samba (
       ensure    => $samba::manage_file,
       variables => $classvars,
       helper    => $samba::puppi_helper,
-      noop      => $samba::bool_noops,
+      noop      => $samba::noops,
     }
   }
 
@@ -401,7 +400,7 @@ class samba (
         target   => $samba::monitor_target,
         tool     => $samba::monitor_tool,
         enable   => $samba::manage_monitor,
-        noop     => $samba::bool_noops,
+        noop     => $samba::noops,
       }
     }
     if $samba::service != '' {
@@ -413,7 +412,7 @@ class samba (
         argument => $samba::process_args,
         tool     => $samba::monitor_tool,
         enable   => $samba::manage_monitor,
-        noop     => $samba::bool_noops,
+        noop     => $samba::noops,
       }
     }
   }
@@ -430,7 +429,7 @@ class samba (
       direction   => 'input',
       tool        => $samba::firewall_tool,
       enable      => $samba::manage_firewall,
-      noop        => $samba::bool_noops,
+      noop        => $samba::noops,
     }
   }
 
@@ -444,7 +443,7 @@ class samba (
       owner   => 'root',
       group   => 'root',
       content => inline_template('<%= scope.to_hash.reject { |k,v| k.to_s =~ /(uptime.*|path|timestamp|free|.*password.*|.*psk.*|.*key)/ }.to_yaml %>'),
-      noop    => $samba::bool_noops,
+      noop    => $samba::noops,
     }
   }
 
