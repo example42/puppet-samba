@@ -41,7 +41,7 @@ class samba::params {
   }
 
   $process_user = $::operatingsystem ? {
-    default => 'samba',
+    default => 'root',
   }
 
   $config_dir = $::operatingsystem ? {
