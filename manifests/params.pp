@@ -23,7 +23,8 @@ class samba::params {
   $service = $::operatingsystem ? {
     /(?i:Centos|RedHat|Scientific|Fedora|Amazon|Linux)/ => 'smb',
     /(?i:SLES|OpenSuSE)/                                => 'smb',
-    /(?i:Debian|Ubuntu|Mint)/                           => 'smbd',
+    /(?i:Ubuntu|Mint)/                                  => 'smbd',
+    /(?i:Debian)/                                       => 'samba',
     default                                             => 'smb',
   }
 
@@ -40,7 +41,7 @@ class samba::params {
   }
 
   $process_user = $::operatingsystem ? {
-    default => 'samba',
+    default => 'root',
   }
 
   $config_dir = $::operatingsystem ? {
