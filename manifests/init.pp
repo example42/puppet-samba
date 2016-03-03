@@ -356,7 +356,7 @@ class samba (
   }
 
   # The whole samba configuration directory can be recursively overriden
-  if $samba::source_dir {
+  if $samba::source_dir and $samba::source_dir != '' {
     file { 'samba.dir':
       ensure  => directory,
       path    => $samba::config_dir,
