@@ -6,7 +6,7 @@
   "project_page": "http://www.example42.com",
   "source": "https://github.com/example42/puppet-samba",
   "summary": "Puppet module for samba",
-  "version": "2.0.15",
+  "version": "2.0.16",
   "checksums": {
     "Modulefile": "cfbb7165fbddef20427bf007f70f6529",
     "README.rdoc": "1c4bc73aacbed851bff2d27a56df0209",
